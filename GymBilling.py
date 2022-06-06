@@ -1,4 +1,4 @@
-#User input program for gym membership and calculate BMI
+#User input program for gym membership(INVOICE) and calculate BMI
 #BMI = weight(kgs)/height(m^2)
 #Get personal details
 print('----Welcome to the FITNESS Portal----')
