@@ -1,0 +1,147 @@
+''' 
+This code is for review of the Advanced Programming (Python) Exercise 5 code for Prof. David Linner. 
+This code has been developed by Ashish Pangaonkar and Veda Prakash Chintha combinedly due to the complexities. Thaknk you for your understanding.
+The code does not have test cases as user can enter 'n' number of lines and choose any test point and angle between 0° and 360°
+'''
+
+# importing libraries
+import math
+from sys import exit
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def function() -> bool:
+    intersection = False
+# initialise test point
+    inp_point = input("Please enter a (x,y) 'Test Point' co-ordinates separated by a comma e.g. 2,3 (no spaces): ")
+    if len(inp_point) != 3:  # including comma
+        print("2D point cannot have more than 2 coordinates. Make sure there are no spaces.")
+        exit()
+
+    test_point = tuple(int(xv) for xv in inp_point.split(","))
+    t1, t2 = test_point
+    t1 = float(t1)
+    t2 = float(t2)
+
+# ask for an angle
+    inp_angle = int(input("Enter angle between 0 and 360: "))
+    if not 0 <= inp_angle <= 360:  # including comma
+        print("Value must be between 0 and 360")
+        exit()
+
+# initialize the lines
+    num = 0
+    test_line_array = []
+    while True:
+        inp_lines = str(input("Enter coordinates as x1,y1,x2,y2 (no spaces and include the comas) "
+                              "type 'done' when done adding the co-ordinates: "))
+
+        if num == 0 and (inp_lines == "Done" or inp_lines == 'done'):
+            print("Please enter coordinates of atleast one line")
+            break
+        if len(inp_lines) >= 12 and (inp_lines != 'done' and inp_lines != "Done"):
+            print("Please make sure you have entered coordinates as x1,y1,x2,y2 with no spaces.")
+            break
+
+        if inp_lines == "Done" or inp_lines == 'done':
+            print('co-ordinates are stored')
+            break
+
+        if num == 1 and (inp_lines == "Done" or inp_lines == 'done'):
+            print(
+                f'Only one line entered, note that {test_line_array[0]} line will be the closest to the line from test '
+                f'point, '
+                'if they intersect')
+            break
+
+        test_line = tuple(int(xii) for xii in inp_lines.split(","))
+        test_line_array.append(test_line)
+        num += 1
+
+    dict = {}
+    plt.plot(t1, t2, color="purple", marker="x")
+    plt.text(t1 - 0.9, t2 - 0.5, f'Point{t1},{t2}')
+
+# if the ange is between 0 and 90 or between 271 and 360 | x = test point x to +100 | y is calculated by mx+c |
+    if 0 <= inp_angle <= 90 or 271 <= inp_angle <= 360:
+        plt.text(t1, t2 - 1.2, 'θ=' + str(inp_angle))
+        sl = np.tan(np.radians(inp_angle))  # calculating slope of line passing through the test point
+        x_values = np.array(range(int(t1), 101, +1))
+        y_inter = t2 - (sl * t1)
+        y_values = np.array(sl * (x_values) + y_inter)
+        plt.plot(x_values, y_values, color="black", linestyle='dotted')
+
+# if the angle is between 91 and 270 | x = test point x to -100 | y is calculated using mx+c |
+    if 91 <= inp_angle <= 270:
+        plt.text(t1, t2 - 0.9, 'θ=' + str(inp_angle))
+        sl = np.tan(np.radians(inp_angle))  # calculating slope of line passing through the test point
+        x_values = np.array(range(int(t1), -101, -1))
+        y_inter = t2 - (sl * t1)
+        y_values = np.array((sl * x_values) + y_inter)
+        plt.plot(x_values, y_values, color="black", linestyle='dotted')
+
+    for itr in range(len(test_line_array)):
+        x1, y1, x2, y2 = test_line_array[itr]  # coordinates of lines
+        x1 = float(x1)
+        x2 = float(x2)
+        y1 = float(y1)
+        y2 = float(y2)
+
+# label the points
+        plt.text(x1, y1 - 0.8, '(%s,%s)' % (x1, y1))
+        plt.text(x2, y2 - 0.4, '(%s,%s)' % (x2, y2))
+
+# plot the segments
+        plt.plot((x1, x2), (y1, y2), color="black", marker="o")
+
+# slope of segments
+        m = float((y2 - y1) / (x2 - x1))  # m = 0
+        #print("slope are..")
+        #print(m)
+        # y = mx +c format
+        # y1 = m * x1 + c
+        y_inter_line = float(y1 - (m * x1))
+
+# let the intersection point of the test point line and the current line be (xi,yi)
+        # m * xi + c = sl * xi +  y_inter
+        # m * xi + y_inter_line = sl * xi + y_inter
+        # mxi - slxi = y_inter - y_inter_line
+        xi = (y_inter - y_inter_line) / (m - sl)
+        yi = (m * xi) + y_inter_line
+
+
+# See if the lines are intersecting
+        if min(x_values) < xi < max(x_values) and min(y_values) < yi < max(y_values):
+            intersection = True
+        else:
+            print(f"{test_line_array[itr]} line do not intersect with line projected from the test point{t1, t2} at given "
+                f"angle of {inp_angle}°")
+            continue
+# distance between points (t1, t2) and (xi, yi) and save it against the line in a dict
+        if intersection == True:
+            distance = round(math.sqrt(((t1 - xi) ** 2) + ((t2 - yi) ** 2)), 3)
+            #print(distance)
+            dict[distance] = test_line_array[itr]
+
+
+# comparing the distances
+    list_dist = list(dict.keys())
+    min_value = min(list_dist)
+    print(f"The closest line to the test point ({t1},{t2}) is {dict[min_value]} and it is {min_value} distance away at an angle of {inp_angle}°")
+# axis-limits
+    plt.xlim(-8, 8)
+    plt.ylim(-10, 10)
+# labels
+    plt.xlabel("x co-ordiantes")
+    plt.ylabel("y co-ordiantes")
+# show grid lines
+    plt.grid()
+# show the graphs
+    plt.show()
+    return intersection
+
+
+print(function())
+
+#Thank you!
