@@ -3,6 +3,7 @@ This code is for review of the Advanced Programming (Python) Exercise 5 code for
 This code has been developed by Ashish Pangaonkar and Veda Prakash Chintha combinedly due to the complexities. Thank you for your understanding.
 The code does not have test cases as user can enter 'n' number of lines and choose any test point and angle between 0° and 360°
 '''
+# This code will help you find the closest segment from the 2D test-point at an any given angle between 0° and 360°
 
 # importing libraries
 import math
