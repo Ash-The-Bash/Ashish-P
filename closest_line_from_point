@@ -1,6 +1,6 @@
 ''' 
 This code is for review of the Advanced Programming (Python) Exercise 5 code for Prof. David Linner. 
-This code has been developed by Ashish Pangaonkar and Veda Prakash Chintha combinedly due to the complexities. Thaknk you for your understanding.
+This code has been developed by Ashish Pangaonkar and Veda Prakash Chintha combinedly due to the complexities. Thank you for your understanding.
 The code does not have test cases as user can enter 'n' number of lines and choose any test point and angle between 0° and 360°
 '''
 
