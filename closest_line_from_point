@@ -120,12 +120,12 @@ def function() -> bool:
 
         if AB == AT + TB or AB == ((AT + TB) + 0.01) or AB == ((AT + TB) - 0.01):
             intersection = True
-            print('intersection is ', intersection)
+            #print('intersection is ', intersection)
         else:
-            print(
-                f"{test_line_array[itr]} line do not intersect with line projected from the test point({t1, t2}) at "
-                f"given "
-                f"angle of {inp_angle}°")
+            #print(
+               # f"{test_line_array[itr]} line do not intersect with line projected from the test point({t1, t2}) at "
+               # f"given "
+                #f"angle of {inp_angle}°")
             continue
         # if min(x_values) < xi < max(x_values) and min(y_values) < yi < max(y_values): intersection = True else:
         # print( f"{test_line_array[itr]} line do not intersect with line projected from the test point({t1,
